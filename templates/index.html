@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lincoln Adura – Business Inquiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060910;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.07);
+      --border-active: rgba(99,179,237,0.35);
+      --blue: #63b3ed;
+      --purple: #9f7aea;
+      --teal: #4fd1c5;
+      --gold: #f6c90e;
+      --text: #f0f4ff;
+      --muted: #8892a4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .blob1 {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.15), transparent);
+      top: -200px; left: -150px;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob2 {
+      position: fixed;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.12), transparent);
+      bottom: -100px; right: -100px;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(99,179,237,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,179,237,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(6,9,16,0.8);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .logo .g { color: var(--gold); }
+    .logo .b { color: var(--text); }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--blue); }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 80px 20px 50px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99,179,237,0.07);
+      border: 1px solid rgba(99,179,237,0.2);
+      color: var(--blue);
+      font-size: 0.78rem;
+      padding: 7px 18px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .form-section {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      margin: 50px auto 80px;
+      padding: 0 20px;
+    }
+
+    .form-card {
+      background: var(--surface);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+
+    .success-box {
+      background: rgba(79,209,197,0.08);
+      border: 1px solid rgba(79,209,197,0.25);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      color: var(--teal);
+      margin-bottom: 30px;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(99,179,237,0.08);
+    }
+
+    select option { background: #0d1225; color: var(--text); }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 35px rgba(99,179,237,0.3);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 28px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="grid"></div>
+
+  <nav>
+    <div class="logo"><span class="g">LINCOLN</span> <span class="b"> ADURA</span></div>
+    <a href="https://lincolnadura-portfolio.netlify.app" class="nav-link">← Portfolio</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-tag"><span class="dot"></span> Open for New Projects</div>
+    <h1>Let's Build <span>Something Great</span></h1>
+    <p>Tell me about your business and what you need. I will get back to you within 24 hours with a plan.</p>
+  </div>
+
+  <div class="form-section">
+    <div class="form-card">
+
+      {% if success %}
+      <div class="success-box">
+        ✅ Thank you! Your inquiry has been received.<br>
+        I will get back to you within 24 hours to discuss your project.
+      </div>
+      {% endif %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="name">Your Full Name *</label>
+          <input type="text" id="name" name="name" placeholder="John Smith" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Your Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="business">Your Business Name *</label>
+          <input type="text" id="business" name="business" placeholder="Your Business Name" required />
+        </div>
+        <div class="form-group">
+          <label for="service">Service You Need *</label>
+          <select id="service" name="service" required>
+            <option value="">Select a service...</option>
+            <option value="Business Website">Business Website</option>
+            <option value="Automation System">Automation System</option>
+            <option value="Telegram Bot">Telegram Bot</option>
+            <option value="WhatsApp Bot">WhatsApp Bot</option>
+            <option value="PDF Invoice Generator">PDF Invoice Generator</option>
+            <option value="API Integration">API Integration</option>
+            <option value="Full Business Package">Full Business Package</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Tell Me About Your Project *</label>
+          <textarea id="message" name="message" placeholder="Describe what you need built and any specific requirements..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Inquiry →</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Lincoln Adura · Automation · Web · Bot Developer · Africa 🌍</p>
+    <p style="margin-top:8px">Questions? <a href="mailto:lincolnadura97@gmail.com">lincolnadura97@gmail.com</a></p>
+  </footer>
+
+</body>
+</html>
