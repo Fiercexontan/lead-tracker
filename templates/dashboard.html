@@ -339,7 +339,7 @@
         <div class="lead-service">{{ lead.service }}</div>
         <div class="lead-message">{{ lead.message }}</div>
         <div class="lead-actions">
-          <a href="mailto:{{ lead.email }}" class="reply-btn">Reply →</a>
+          <a href="https://mail.google.com/mail/?view=cm&to={{ lead.email }}&su=Re: Your Project Inquiry&body=Hi {{ lead.name }},%0A%0AThank you for your inquiry. I would love to discuss your project further.%0A%0ABest regards,%0ALincoln Adura" target="_blank" class="reply-btn">Reply →</a>
           <a href="/delete/{{ lead.id }}" class="delete-btn" onclick="return confirm('Delete this lead?')">Delete</a>
         </div>
       </div>
