@@ -7,13 +7,12 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback_secret_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///leads.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# ── DATABASE MODEL ────────────────────────────────────────────
 class Lead(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -26,7 +25,8 @@ class Lead(db.Model):
     def __repr__(self):
         return f'<Lead {self.name}>'
 
-# ── ROUTES ───────────────────────────────────────────────────
+with app.app_context():
+    db.create_all()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -37,7 +37,6 @@ def index():
         business = request.form.get('business')
         service = request.form.get('service')
         message = request.form.get('message')
-
         new_lead = Lead(
             name=name,
             email=email,
@@ -48,7 +47,6 @@ def index():
         db.session.add(new_lead)
         db.session.commit()
         success = True
-
     return render_template('index.html', success=success)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -56,7 +54,7 @@ def login():
     error = None
     if request.method == 'POST':
         password = request.form.get('password')
-        if password == os.getenv('ADMIN_PASSWORD'):
+        if password == os.getenv('ADMIN_PASSWORD', 'lincoln2026'):
             session['logged_in'] = True
             return redirect(url_for('dashboard'))
         else:
@@ -84,13 +82,6 @@ def delete_lead(id):
     db.session.delete(lead)
     db.session.commit()
     return redirect(url_for('dashboard'))
-
-# ── MAIN ─────────────────────────────────────────────────────
-
-if __name__ == '__main__':
-    with app.app_context():
-    db.create_all()
-    print("✅ Tables created!")
 
 if __name__ == '__main__':
     print("🚀 Starting Lead Tracker...")
